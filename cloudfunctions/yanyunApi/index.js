@@ -14,7 +14,8 @@ function hashPassword(password) {
 
 /**
  * 云函数入口函数
- * 直接操作云数据库，每次写操作时版本号 +1
+ * 直接操作云数据库，字段名统一使用 snake_case 与 MySQL 一致
+ * 每次写操作时 _syncVersion +1，_dataSource = 'cloud'
  */
 exports.main = async (event, context) => {
   const wxCtx = cloud.getWXContext();
@@ -31,12 +32,12 @@ exports.main = async (event, context) => {
           return { error: '参数不完整' };
         }
 
-        // 1. 查找用户（通过 gameName + 加密后的密码）
+        // 1. 查找用户（通过 game_name + 加密后的密码）
         const passwordHash = hashPassword(password);
         const userRes = await db.collection('users')
           .where({
-            gameName: gameName.trim(),
-            passwordHash
+            game_name: gameName.trim(),
+            password_hash: passwordHash
           })
           .get();
 
@@ -47,27 +48,27 @@ exports.main = async (event, context) => {
         const user = userRes.data[0];
 
         // 2. 检查是否已被其他 openId 绑定
-        if (user.openId && user.openId !== openId) {
+        if (user.open_id && user.open_id !== openId) {
           return { error: '该账号已被其他微信绑定' };
         }
 
-        // 3. 更新 openId（版本号 +1）
+        // 3. 更新 open_id（版本号 +1）
         const currentVersion = user._syncVersion || 0;
         await db.collection('users').doc(user._id).update({
           data: {
-            openId,
+            open_id: openId,
             _syncVersion: currentVersion + 1,
             _dataSource: 'cloud',
-            updatedAt: new Date()
+            updated_at: db.serverDate()
           }
         });
 
-        return { user: { id: user._id, gameName: user.gameName, openId } };
+        return { user: { id: user._id, game_name: user.game_name, open_id: openId } };
       }
 
       case 'getUserByOpenId': {
         const userRes = await db.collection('users')
-          .where({ openId })
+          .where({ open_id: openId })
           .get();
 
         if (userRes.data.length === 0) {
@@ -96,7 +97,7 @@ exports.main = async (event, context) => {
           return { error: '用户不存在' };
         }
 
-        return { quotas: userRes.data.mpQuota || { invite: 0, full: 0, remind: 0 } };
+        return { quotas: userRes.data.mp_quota || { invite: 0, full: 0, remind: 0 } };
       }
 
       case 'addQuota': {
@@ -111,7 +112,7 @@ exports.main = async (event, context) => {
         }
 
         const user = userRes.data;
-        const mpQuota = user.mpQuota || { invite: 0, full: 0, remind: 0 };
+        const mpQuota = user.mp_quota || { invite: 0, full: 0, remind: 0 };
 
         // 只要用户点击了授权（不管同意几个模板），三种令牌都各 +1
         if (accepted.length > 0) {
@@ -124,10 +125,10 @@ exports.main = async (event, context) => {
         const currentVersion = user._syncVersion || 0;
         await db.collection('users').doc(userId).update({
           data: {
-            mpQuota,
+            mp_quota: mpQuota,
             _syncVersion: currentVersion + 1,
             _dataSource: 'cloud',
-            updatedAt: new Date()
+            updated_at: db.serverDate()
           }
         });
 
@@ -138,15 +139,15 @@ exports.main = async (event, context) => {
         // 获取所有用户（排除当前用户）
         const usersRes = await db.collection('users')
           .where({
-            openId: _.neq(openId)
+            open_id: _.neq(openId)
           })
           .get();
 
         return usersRes.data.map(u => ({
           id: u._id,
-          gameName: u.gameName,
-          mainStyle: u.mainStyle,
-          subStyle: u.subStyle
+          game_name: u.game_name,
+          main_style: u.main_style,
+          sub_style: u.sub_style
         }));
       }
 
@@ -175,7 +176,7 @@ exports.main = async (event, context) => {
         const team = teamRes.data;
 
         // 2. 检查是否已满员
-        if (team.members && team.members.length >= team.maxSize) {
+        if (team.members && team.members.length >= team.max_size) {
           return { error: '队伍已满' };
         }
 
@@ -198,9 +199,9 @@ exports.main = async (event, context) => {
           ...(team.members || []),
           {
             userId: user._id,
-            gameName: user.gameName,
-            mainStyle: user.mainStyle,
-            subStyle: user.subStyle
+            gameName: user.game_name,
+            mainStyle: user.main_style,
+            subStyle: user.sub_style
           }
         ];
 
@@ -209,7 +210,7 @@ exports.main = async (event, context) => {
             members: newMembers,
             _syncVersion: currentVersion + 1,
             _dataSource: 'cloud',
-            updatedAt: new Date()
+            updated_at: db.serverDate()
           }
         });
 
@@ -231,7 +232,7 @@ exports.main = async (event, context) => {
         }
 
         const target = targetRes.data;
-        const pendingInvites = target.pendingInvites || [];
+        const pendingInvites = target.pending_invites || [];
 
         // 2. 检查是否已有相同邀请
         if (pendingInvites.some(inv => inv.teamId === teamId)) {
@@ -251,10 +252,10 @@ exports.main = async (event, context) => {
 
         await db.collection('users').doc(targetUserId).update({
           data: {
-            pendingInvites,
+            pending_invites: pendingInvites,
             _syncVersion: currentVersion + 1,
             _dataSource: 'cloud',
-            updatedAt: new Date()
+            updated_at: db.serverDate()
           }
         });
 
@@ -269,7 +270,7 @@ exports.main = async (event, context) => {
           return [];
         }
 
-        const pendingInvites = userRes.data.pendingInvites || [];
+        const pendingInvites = userRes.data.pending_invites || [];
 
         // 获取每个邀请对应的队伍信息
         const invitesWithTeam = await Promise.all(
@@ -303,16 +304,16 @@ exports.main = async (event, context) => {
         }
 
         const user = userRes.data;
-        const pendingInvites = (user.pendingInvites || []).filter(inv => inv.id !== inviteId);
+        const pendingInvites = (user.pending_invites || []).filter(inv => inv.id !== inviteId);
 
         // 更新邀请列表（版本号 +1）
         const currentVersion = user._syncVersion || 0;
         await db.collection('users').doc(userId).update({
           data: {
-            pendingInvites,
+            pending_invites: pendingInvites,
             _syncVersion: currentVersion + 1,
             _dataSource: 'cloud',
-            updatedAt: new Date()
+            updated_at: db.serverDate()
           }
         });
 
@@ -321,8 +322,8 @@ exports.main = async (event, context) => {
 
       default:
         return { error: '未知指令' };
-    }
 
+    }
   } catch (err) {
     console.error('[云函数错误]', event.action, err);
     return { error: '服务异常，请稍后重试' };

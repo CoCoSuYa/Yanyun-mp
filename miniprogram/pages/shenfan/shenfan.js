@@ -76,13 +76,19 @@ Page({
       const r = res.result;
       console.log('[bindAccount 返回]', JSON.stringify(r));
       if (r.error) { this.setData({ errMsg: r.error }); return; }
-      // 兼容两种格式：{ user: {...} } 或直接返回用户对象 { id, gameName, ... }
-      const user = r.user || (r.id ? r : null);
-      if (!user) {
+      // 云函数返回 { user: { id, game_name, open_id } }
+      const rawUser = r.user || (r.id ? r : null);
+      if (!rawUser) {
         this.setData({ errMsg: '绑定失败，账号信息获取异常，请重试' });
         console.error('[bindAccount] 无法解析用户信息，完整返回:', r);
         return;
       }
+      // 统一转为前端使用的 camelCase 格式存储
+      const user = {
+        id: rawUser.id || rawUser._id,
+        gameName: rawUser.game_name || rawUser.gameName,
+        openId: rawUser.open_id || rawUser.openId,
+      };
       wx.setStorageSync('boundUser', user);
       this.setData({ boundUser: user, gameName: '', password: '', displayPwd: '' });
       wx.showToast({ title: '身份绑定成功', icon: 'success' });
