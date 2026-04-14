@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "身份牌",
+  "usingComponents": {
+    "invite-float": "/components/invite-float/index",
+    "bgm-player": "/components/bgm-player/index"
+  }
+}

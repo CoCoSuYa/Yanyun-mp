@@ -1,0 +1,24 @@
+.page { 
+  background: var(--bg); 
+  min-height: 100vh; 
+  padding: 0 24rpx;
+  /* 使用网络加载的楷�?*/
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
+}
+.center-tip { display: flex; align-items: center; justify-content: center; height: 60vh; color: var(--text-muted); font-size: 28rpx; }
+.center-tip.error { color: #e05050; }
+.content .card { margin-bottom: 24rpx; }
+.invite-banner { padding: 48rpx 0 32rpx; text-align: center; }
+.banner-from  { 
+  font-size: 48rpx; 
+  color: var(--gold-light); 
+  /* 使用网络加载的楷�?*/
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important; 
+  font-weight: 700; 
+}
+.banner-label { font-size: 28rpx; color: var(--text-muted); }
+.team-row { display: flex; align-items: flex-start; margin-bottom: 12rpx; }
+.tl { font-size: 24rpx; color: var(--text-muted); width: 60rpx; flex-shrink: 0; }
+.tv { font-size: 26rpx; color: var(--text); flex: 1; }
+.warn-card { text-align: center; padding: 24rpx; font-size: 28rpx; color: var(--text-muted); background: rgba(255,255,255,.04); border: 1rpx solid var(--border); border-radius: 16rpx; }
+.action-area { margin-top: 8rpx; }

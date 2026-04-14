@@ -1,0 +1,4 @@
+<view class="float-entry" bindtap="goToLogs">
+  <text class="float-icon">📋</text>
+  <text class="float-text">日志</text>
+</view>

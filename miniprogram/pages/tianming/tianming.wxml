@@ -1,0 +1,89 @@
+<view class="page">
+  <view class="page-hd" style="padding-top: {{statusBarHeight}}px; margin-top: 20rpx;">
+    <text class="page-hd-title">令牌殿</text>
+    <text class="page-hd-sub">通知令牌 · 一令一报</text>
+  </view>
+
+  <view wx:if="{{!loading && !isBound}}" class="tip-box">
+    <text class="tip-icon">⚔</text>
+    <text class="tip-text">尚未绑定江湖身份</text>
+    <text class="tip-sub">绑定账号后，方可领取令牌\n获取通知资格</text>
+    <view class="btn btn-primary" bindtap="goToBind">前往身份牌</view>
+  </view>
+
+  <view wx:if="{{isBound}}" class="content">
+    <view class="quota-card card">
+      <view class="quota-row">
+        <view class="quota-badge invite">邀</view>
+        <view class="quota-info">
+          <text class="quota-name">邀约令</text>
+          <text class="quota-desc">江湖人士向你发起的组队邀请</text>
+        </view>
+        <text class="quota-count">{{quotas.invite}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="quota-row">
+        <view class="quota-badge full">满</view>
+        <view class="quota-info">
+          <text class="quota-name">满员令</text>
+          <text class="quota-desc">你的队伍已满员时通知队长</text>
+        </view>
+        <text class="quota-count">{{quotas.full}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="quota-row">
+        <view class="quota-badge remind">鸣</view>
+        <view class="quota-info">
+          <text class="quota-name">开本令</text>
+          <text class="quota-desc">开本前二十分钟提醒全体</text>
+        </view>
+        <text class="quota-count">{{quotas.remind}}</text>
+      </view>
+    </view>
+
+    <view class="tip-card card">
+      <text class="tip-card-text">⚔ 选择领取次数后，每次点击按钮弹出一个授权窗口，三种令牌同时出现，全部点「允许」即得三枚。连续点击即可快速积累。</text>
+    </view>
+
+    <view wx:if="{{targetCount > 0 && doneCount < targetCount}}" class="progress-bar-wrap">
+      <view class="progress-bar" style="width:{{doneCount/targetCount*100}}%"></view>
+      <text class="progress-label">{{doneCount}} / {{targetCount}} 次  · 已得 {{sessionGained}} 枚</text>
+    </view>
+
+    <view wx:if="{{targetCount > 0 && doneCount >= targetCount}}" class="session-tip">
+      ✓ 本轮已完成，共领取 <text class="session-count">{{sessionGained}}</text> 枚
+    </view>
+
+    <view
+      class="btn btn-primary {{getting ? 'disabled' : ''}}"
+      style="margin: 0 0 20rpx"
+      bindtap="onGetQuota"
+    >
+      <block wx:if="{{getting}}">弹窗中，请点击允许…</block>
+      <block wx:elif="{{targetCount === 0}}">⚔ 选择领取次数</block>
+      <block wx:elif="{{doneCount >= targetCount}}">⚔ 再次领取</block>
+      <block wx:else>⚔ 领取令牌（{{doneCount+1}}/{{targetCount}}）</block>
+    </view>
+  </view>
+
+  <view wx:if="{{showPicker}}" class="mask" bindtap="onHidePicker">
+    <view class="picker-box" catchtap="">
+      <text class="picker-title">选择领取次数</text>
+      <text class="picker-sub">每次点按钮弹一个授权窗口，全部允许得三枚</text>
+      <view class="count-grid">
+        <view
+          wx:for="{{countOptions}}" wx:key="index"
+          class="count-item"
+          data-count="{{item}}"
+          bindtap="onPickCount"
+        >{{item}}次</view>
+      </view>
+      <view class="btn btn-ghost" style="margin-top:24rpx" bindtap="onHidePicker">拂袖而去</view>
+    </view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
+<bgm-player />
+<invite-float id="inviteFloat" />
+

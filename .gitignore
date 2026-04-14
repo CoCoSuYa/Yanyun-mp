@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cloud functions dependencies
+cloudfunctions/*/node_modules/
+
+# Miniprogram npm
+miniprogram_npm/
+
+# Temp files
+tmp/
+temp/

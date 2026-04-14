@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="page-hd" style="padding-top: {{statusBarHeight}}px; margin-top: 20rpx;">
+    <text class="page-hd-title">江湖令</text>
+    <text class="page-hd-sub">踏入江湖 · 预约组队</text>
+  </view>
+
+  <view class="content">
+    <view class="site-card card">
+      <text class="site-title">燕云十六声</text>
+      <text class="site-sub">预约组队 · 百舸争流</text>
+      <view class="url-box">
+        <text class="url-text" selectable="true">{{url}}</text>
+      </view>
+      <view class="btn btn-primary" bindtap="onCopy">复制链接，前往江湖</view>
+    </view>
+
+    <view class="info-card card">
+      <text class="info-title">⚔ 如何前往</text>
+      <text class="info-step">① 点击上方「复制链接」</text>
+      <text class="info-step">② 打开手机浏览器</text>
+      <text class="info-step">③ 粘贴地址，踏入江湖</text>
+    </view>
+
+    <view class="info-card card">
+      <text class="info-title">⚔ 关于此处</text>
+      <text class="info-body">本小程序用于获取通知令牌及接收组队提醒，完整的组队功能请前往主站使用。</text>
+    </view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
+<bgm-player />
+<invite-float id="inviteFloat" />

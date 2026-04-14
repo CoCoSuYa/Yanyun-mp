@@ -1,0 +1,24 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="center-tip"><text>加载中…</text></view>
+  <view wx:elif="{{errMsg}}" class="center-tip error"><text>{{errMsg}}</text></view>
+  <view wx:else class="content">
+    <view class="invite-banner">
+      <text class="banner-from">{{fromUser.gameName}}</text>
+      <text class="banner-label"> 邀您入队</text>
+    </view>
+    <view class="team-card card">
+      <view class="team-row"><text class="tl">副本</text><text class="tv">{{team.type}}</text></view>
+      <view wx:if="{{team.purpose}}" class="team-row"><text class="tl">备注</text><text class="tv">{{team.purpose}}</text></view>
+      <view class="team-row"><text class="tl">时间</text><text class="tv">{{teamTimeStr}}</text></view>
+      <view class="team-row"><text class="tl">队长</text><text class="tv">{{leaderName}}</text></view>
+      <view class="team-row"><text class="tl">人数</text><text class="tv">{{team.members.length}}/{{team.maxMembers}}</text></view>
+    </view>
+    <view class="action-area">
+      <view wx:if="{{alreadyIn}}" class="warn-card">已在队伍中</view>
+      <view wx:elif="{{timePassed}}" class="warn-card">开本时间已过</view>
+      <view wx:elif="{{team.members.length >= team.maxMembers}}" class="warn-card">队伍已满员</view>
+      <view wx:else class="btn btn-primary" bindtap="onJoin">接受邀请，立即入队</view>
+    </view>
+  </view>
+  <view class="safe-bottom"></view>
+</view>

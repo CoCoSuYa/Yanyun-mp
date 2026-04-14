@@ -1,0 +1,33 @@
+.tabbar {
+  display: flex;
+  height: 100rpx;
+  background: #1a0f08;
+  border-top: 1rpx solid rgba(200,168,75,.3);
+}
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+}
+.tab-icon {
+  font-size: 32rpx;
+  color: #8a7050;
+  /* 使用网络加载的楷�?*/
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
+  font-weight: 700;
+  line-height: 1;
+}
+.tab-text {
+  font-size: 20rpx;
+  color: #8a7050;
+  letter-spacing: 1rpx;
+  /* 使用网络加载的楷�?*/
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
+}
+.tab-item.active .tab-icon,
+.tab-item.active .tab-text {
+  color: #f0d882;
+}
