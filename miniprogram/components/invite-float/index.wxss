@@ -1,0 +1,110 @@
+.float-btn {
+  position: fixed;
+  right: -60rpx;
+  bottom: 200rpx;
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #5a3010, #9a5a18);
+  border: 3rpx solid #c8a84b;
+  box-shadow: -4rpx 0 20rpx rgba(0,0,0,.6), inset 0 0 16rpx rgba(200,168,75,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: right .35s cubic-bezier(.4,0,.2,1);
+}
+.float-btn.float-expanded { right: 0rpx; }
+.float-btn.has-invite { right: -40rpx; animation: pulse 2s infinite; }
+.float-btn.has-invite.float-expanded { right: 0rpx; animation: none; }
+
+@keyframes pulse {
+  0%, 100% { box-shadow: -4rpx 0 20rpx rgba(0,0,0,.6), 0 0 0 0 rgba(200,168,75,.6); }
+  50%       { box-shadow: -4rpx 0 20rpx rgba(0,0,0,.6), 0 0 0 14rpx rgba(200,168,75,0); }
+}
+
+.float-char {
+  font-size: 34rpx;
+  color: #f0d882;
+  font-weight: 700;
+  line-height: 1;
+  /* 使用网络加载的楷�?*/
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
+}
+.float-badge {
+  position: absolute;
+  top: -8rpx; right: -8rpx;
+  min-width: 36rpx; height: 36rpx;
+  border-radius: 18rpx;
+  background: #c0392b;
+  color: #fff;
+  font-size: 20rpx;
+  line-height: 36rpx;
+  text-align: center;
+  padding: 0 6rpx;
+  font-weight: 700;
+}
+
+.panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.invite-panel {
+  width: 680rpx;
+  max-height: 75vh;
+  background: #1a0f08;
+  border: 2rpx solid #c8a84b;
+  border-radius: 24rpx;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8rpx 48rpx rgba(0,0,0,.8);
+}
+.panel-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 36rpx 20rpx;
+  border-bottom: 1rpx solid rgba(200,168,75,.25);
+  flex-shrink: 0;
+}
+.panel-title { 
+  font-size: 32rpx; 
+  color: #f0d882; 
+  /* 使用网络加载的楷�?*/
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important; 
+  font-weight: 700; 
+  letter-spacing: 2rpx; 
+}
+.panel-close { font-size: 32rpx; color: #8a7050; padding: 8rpx 8rpx 8rpx 32rpx; }
+.panel-loading, .panel-empty { padding: 60rpx 0; text-align: center; color: #8a7050; font-size: 28rpx; }
+.panel-list { flex: 1; padding: 16rpx 24rpx 28rpx; }
+
+.invite-card {
+  background: rgba(255,255,255,.04);
+  border: 1rpx solid rgba(200,168,75,.25);
+  border-radius: 16rpx;
+  padding: 24rpx 28rpx 20rpx;
+  margin-bottom: 20rpx;
+}
+.invite-from { display: flex; align-items: baseline; margin-bottom: 16rpx; }
+.invite-from-name { 
+  font-size: 30rpx; 
+  color: #f0d882; 
+  font-weight: 700; 
+  /* 使用网络加载的楷�?*/
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important; 
+}
+.invite-from-label { font-size: 24rpx; color: #b8944a; margin-left: 6rpx; }
+.invite-row { display: flex; align-items: center; margin-bottom: 8rpx; }
+.invite-label { font-size: 24rpx; color: #8a7050; width: 60rpx; flex-shrink: 0; }
+.invite-val { font-size: 24rpx; color: #d4b87a; flex: 1; }
+.invite-actions { display: flex; gap: 20rpx; margin-top: 20rpx; }
+.btn-accept, .btn-reject { flex: 1; height: 68rpx; line-height: 68rpx; border-radius: 12rpx; font-size: 26rpx; border: none; padding: 0; }
+.btn-accept { background: linear-gradient(135deg, #9a5a18, #c8a84b); color: #fff; font-weight: 700; }
+.btn-accept.btn-loading { background: #5a4020; color: #8a7050; }
+.btn-reject { background: rgba(255,255,255,.06); border: 1rpx solid rgba(200,168,75,.3); color: #8a7050; }

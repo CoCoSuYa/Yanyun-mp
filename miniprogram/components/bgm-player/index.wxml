@@ -1,0 +1,12 @@
+<movable-area class="bgm-area">
+  <movable-view 
+    class="bgm-player" 
+    direction="all"
+    x="{{x}}"
+    y="{{y}}"
+    bindtap="togglePlay"
+    out-of-bounds="false"
+  >
+    <view class="bgm-inner {{isPlaying ? 'playing' : ''}}">🎵</view>
+  </movable-view>
+</movable-area>

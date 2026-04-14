@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/tianming/tianming",
+    "pages/jianghu/jianghu",
+    "pages/shenfan/shenfan",
+    "pages/invite/invite",
+    "pages/logs/logs"
+  ],
+  "tabBar": {
+    "custom": true,
+    "list": [
+      { "pagePath": "pages/tianming/tianming" },
+      { "pagePath": "pages/jianghu/jianghu" },
+      { "pagePath": "pages/shenfan/shenfan" }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1a0f08",
+    "navigationBarTitleText": "百舸助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#120b05",
+    "navigationStyle": "custom"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

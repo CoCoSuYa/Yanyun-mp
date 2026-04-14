@@ -1,0 +1,77 @@
+<view class="page">
+  <view class="page-hd" style="padding-top: {{statusBarHeight}}px; margin-top: 20rpx;">
+    <text class="page-hd-title">身份牌</text>
+    <text class="page-hd-sub">绑定江湖身份 · 接收通知令</text>
+  </view>
+
+  <view class="content">
+    <view wx:if="{{boundUser}}" class="bound-card card">
+      <text class="bound-label">当前身份</text>
+      <view class="bound-info">
+        <text class="bound-name">{{boundUser.gameName}}</text>
+        <view class="bound-tags">
+          <text class="bound-tag">{{boundUser.mainStyle}}</text>
+          <text wx:if="{{boundUser.subStyle}}" class="bound-tag">{{boundUser.subStyle}}</text>
+          <text wx:if="{{boundUser.guildName}}" class="bound-tag guild">{{boundUser.guildName}}</text>
+        </view>
+      </view>
+      
+      <view class="divider" style="margin: 32rpx 0;"></view>
+
+      <view class="bound-status">
+        <text class="status-dot">●</text>
+        <text class="status-text">小程序通知已就绪</text>
+      </view>
+      <view class="btn btn-danger" style="margin-top:32rpx" bindtap="onUnbind">解绑身份</view>
+    </view>
+
+    <view wx:else class="form-card card">
+      <text class="form-intro">使用主站账号密码绑定，绑定后可接收组队通知</text>
+
+      <view class="form-item">
+        <text class="form-label">游戏名</text>
+        <input
+          class="form-input"
+          placeholder="请输入游戏名"
+          placeholder-style="color:#6a5a44;font-size:26rpx;"
+          value="{{gameName}}"
+          bindinput="onInputName"
+          maxlength="20"
+          focus="{{nameFocus}}"
+          bindblur="onNameBlur"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">密码</text>
+        <input
+          class="form-input"
+          placeholder="请输入主站密码"
+          placeholder-style="color:#6a5a44;font-size:26rpx;"
+          type="text"
+          focus="{{pwdFocus}}"
+          value="{{displayPwd}}"
+          bindinput="onInputPwd"
+          bindfocus="onPwdFocus"
+          bindblur="onPwdBlur"
+        />
+      </view>
+
+      <text wx:if="{{errMsg}}" class="form-err">{{errMsg}}</text>
+
+      <view
+        class="btn btn-primary {{loading ? 'disabled' : ''}}"
+        style="margin-top:32rpx"
+        bindtap="onBind"
+      >{{loading ? '验证中…' : '⚔ 身份核实'}}</view>
+    </view>
+
+    <view class="card">
+      <text class="info-text">⚔ 绑定仅用于关联通知，不会修改你的主站账号信息。密码通过加密通道验证，不会被存储。</text>
+    </view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>
+<bgm-player />
+<invite-float id="inviteFloat" />
