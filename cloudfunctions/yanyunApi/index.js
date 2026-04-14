@@ -6,9 +6,10 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const _ = db.command;
 
-// 密码加密函数（与后端保持一致）
+// 密码加密函数（与后端保持一致，使用相同的盐值）
+const PWD_SALT = 'yanyun16_';
 function hashPassword(password) {
-  return crypto.createHash('sha256').update(password).digest('hex');
+  return crypto.createHash('sha256').update(PWD_SALT + password).digest('hex');
 }
 
 /**
