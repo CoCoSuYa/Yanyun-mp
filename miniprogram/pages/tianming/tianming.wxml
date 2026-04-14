@@ -46,7 +46,7 @@
     </view>
 
     <view wx:if="{{targetCount > 0 && doneCount < targetCount}}" class="progress-bar-wrap">
-      <view class="progress-bar" style="width:{{doneCount/targetCount*100}}%"></view>
+      <view class="progress-bar" style="width:{{doneCount/targetCount*100}}"></view>
       <text class="progress-label">{{doneCount}} / {{targetCount}} 次  · 已得 {{sessionGained}} 枚</text>
     </view>
 

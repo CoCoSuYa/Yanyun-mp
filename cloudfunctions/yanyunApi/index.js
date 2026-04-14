@@ -113,11 +113,19 @@ exports.main = async (event, context) => {
         const user = userRes.data;
         const mpQuota = user.mpQuota || { invite: 0, full: 0, remind: 0 };
 
+        // 模板 ID 映射表（与后端保持一致）
+        const templateMap = {
+          'AW2yW4gdkkvFfPbzmjXqyLXJEv-37x8OvKwVjQsbn9c': 'invite',
+          'xS-3Jx8peYoBZTilqPjJX9nkulx_jTyWANvxTxFBXKQ': 'full',
+          'NaOE1J-CVC-ggFa2SmUcVrVOmjLDkaYuDO_bSweSYRU': 'remind'
+        };
+
         // 增加对应模板的额度
         accepted.forEach(templateId => {
-          if (templateId.includes('invite')) mpQuota.invite++;
-          else if (templateId.includes('full')) mpQuota.full++;
-          else if (templateId.includes('remind')) mpQuota.remind++;
+          const quotaType = templateMap[templateId];
+          if (quotaType) {
+            mpQuota[quotaType]++;
+          }
         });
 
         // 更新云库（版本号 +1）
