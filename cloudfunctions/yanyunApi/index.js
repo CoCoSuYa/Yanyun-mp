@@ -113,20 +113,12 @@ exports.main = async (event, context) => {
         const user = userRes.data;
         const mpQuota = user.mpQuota || { invite: 0, full: 0, remind: 0 };
 
-        // 模板 ID 映射表（与后端保持一致）
-        const templateMap = {
-          'AW2yW4gdkkvFfPbzmjXqyLXJEv-37x8OvKwVjQsbn9c': 'invite',
-          'xS-3Jx8peYoBZTilqPjJX9nkulx_jTyWANvxTxFBXKQ': 'full',
-          'NaOE1J-CVC-ggFa2SmUcVrVOmjLDkaYuDO_bSweSYRU': 'remind'
-        };
-
-        // 增加对应模板的额度
-        accepted.forEach(templateId => {
-          const quotaType = templateMap[templateId];
-          if (quotaType) {
-            mpQuota[quotaType]++;
-          }
-        });
+        // 只要用户点击了授权（不管同意几个模板），三种令牌都各 +1
+        if (accepted.length > 0) {
+          mpQuota.invite++;
+          mpQuota.full++;
+          mpQuota.remind++;
+        }
 
         // 更新云库（版本号 +1）
         const currentVersion = user._syncVersion || 0;
