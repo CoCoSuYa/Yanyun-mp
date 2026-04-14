@@ -1,9 +1,15 @@
 const cloud = require('wx-server-sdk');
+const crypto = require('crypto');
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const db = cloud.database();
 const _ = db.command;
+
+// 密码加密函数（与后端保持一致）
+function hashPassword(password) {
+  return crypto.createHash('sha256').update(password).digest('hex');
+}
 
 /**
  * 云函数入口函数
@@ -24,11 +30,12 @@ exports.main = async (event, context) => {
           return { error: '参数不完整' };
         }
 
-        // 1. 查找用户（通过 gameName + password）
+        // 1. 查找用户（通过 gameName + 加密后的密码）
+        const passwordHash = hashPassword(password);
         const userRes = await db.collection('users')
           .where({
             gameName: gameName.trim(),
-            passwordHash: password  // 注意：实际应该是加密后的密码
+            passwordHash
           })
           .get();
 
