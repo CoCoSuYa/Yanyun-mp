@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "令牌殿",
   "usingComponents": {
-    "invite-float": "/components/invite-float/index",
     "bgm-player": "/components/bgm-player/index"
   }
 }

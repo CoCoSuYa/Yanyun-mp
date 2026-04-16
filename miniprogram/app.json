@@ -1,16 +1,12 @@
 {
   "pages": [
     "pages/tianming/tianming",
-    "pages/jianghu/jianghu",
-    "pages/shenfan/shenfan",
-    "pages/invite/invite",
-    "pages/logs/logs"
+    "pages/shenfan/shenfan"
   ],
   "tabBar": {
     "custom": true,
     "list": [
       { "pagePath": "pages/tianming/tianming" },
-      { "pagePath": "pages/jianghu/jianghu" },
       { "pagePath": "pages/shenfan/shenfan" }
     ]
   },

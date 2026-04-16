@@ -1,11 +1,8 @@
-const { CLOUD_ENV } = require('./config');
-
 App({
   globalData: {
     statusBarHeight: 20
   },
   onLaunch() {
-    wx.cloud.init({ env: CLOUD_ENV, traceUser: true });
     try {
       const sysInfo = wx.getSystemInfoSync();
       this.globalData.statusBarHeight = sysInfo.statusBarHeight || 20;

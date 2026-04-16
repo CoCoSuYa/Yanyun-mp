@@ -1,6 +1,3 @@
-/* 引入 base64 内嵌字体（无需网络请求） */
-@import './font-face.wxss';
-
 /* 全局 CSS 变量 · 古风暗金主题（与网站一致） */
 page {
   --bg:           #120b05;
@@ -17,14 +14,13 @@ page {
 
   background: var(--bg);
   color: var(--text);
-  /* 测试：严格只用内嵌古风字体 */
-  font-family: 'GuFengKaiTi';
+  /* 使用系统默认字体 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
 
-/* 确保所有元素都使用古风字体 */
+/* 确保所有元素都使用系统字体 */
 view, text, button, input, textarea, picker-view, rich-text {
-  /* 测试：严格只用内嵌古风字体 */
-  font-family: 'GuFengKaiTi';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
 
 /* 通用卡片 */

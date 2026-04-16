@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "江湖令",
-  "usingComponents": {
-    "invite-float": "/components/invite-float/index",
-    "bgm-player": "/components/bgm-player/index"
-  }
-}
