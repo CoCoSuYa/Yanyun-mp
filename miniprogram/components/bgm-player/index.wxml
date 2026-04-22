@@ -1,12 +1,25 @@
-<movable-area class="bgm-area">
-  <movable-view 
-    class="bgm-player" 
+<movable-area class="move-area" style="width:{{moveAreaW}}px;height:{{moveAreaH}}px;">
+  <movable-view
+    class="bgm-bar"
     direction="all"
-    x="{{x}}"
-    y="{{y}}"
-    bindtap="togglePlay"
-    out-of-bounds="false"
+    x="{{posX}}"
+    y="{{posY}}"
+    disabled="{{!draggable}}"
+    bindchange="onMoveEnd"
+    damping="80"
+    friction="2"
   >
-    <view class="bgm-inner {{isPlaying ? 'playing' : ''}}">🎵</view>
+    <!-- 播放/暂停 -->
+    <view class="bgm-btn" bindtap="onToggle">
+      <text class="bgm-icon">{{playing ? '⏸' : '▶'}}</text>
+    </view>
+    <!-- 切歌 -->
+    <view class="bgm-btn" bindtap="onNext">
+      <text class="bgm-icon">⏭</text>
+    </view>
+    <!-- 曲名 -->
+    <view wx:if="{{showName}}" class="bgm-name-wrap">
+      <text class="bgm-name {{songName.length > 5 ? 'marquee' : ''}}">{{songName}}</text>
+    </view>
   </movable-view>
 </movable-area>

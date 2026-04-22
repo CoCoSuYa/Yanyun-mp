@@ -1,96 +1,45 @@
+/**
+ * 云函数入口 — 路由分发
+ */
 const cloud = require('wx-server-sdk');
-const http  = require('http');
-
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
-const SERVER = 'http://115.190.74.217:3000';
+const userRoute    = require('./routes/user');
+const teamRoute    = require('./routes/team');
+const inviteRoute  = require('./routes/invite');
+const musicRoute   = require('./routes/music');
+const quotaRoute   = require('./routes/quota');
 
-function req(url, method = 'GET', body = null) {
-  return new Promise((resolve, reject) => {
-    const u = new URL(url);
-    const options = {
-      hostname: u.hostname,
-      port:     u.port || 80,
-      path:     u.pathname + u.search,
-      method,
-      headers:  { 'Content-Type': 'application/json' },
-    };
-    const r = http.request(options, res => {
-      let data = '';
-      res.on('data', c => (data += c));
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
-        catch { resolve({ raw: data }); }
-      });
-    });
-    r.on('error', reject);
-    if (body) r.write(JSON.stringify(body));
-    r.end();
-  });
-}
+// action → { handler, module } 映射
+const ACTIONS = {
+  login:           { handler: userRoute.login,           needOpenId: false },
+  register:        { handler: userRoute.register,        needOpenId: false },
+  bindAccount:     { handler: userRoute.bindAccount,     needOpenId: true  },
+  getUserByOpenId: { handler: userRoute.getUserByOpenId, needOpenId: true  },
+  getUser:         { handler: userRoute.getUser,         needOpenId: false },
 
-exports.main = async (event, context) => {
+  getTeam:         { handler: teamRoute.getTeam,         needOpenId: false },
+  joinTeam:        { handler: teamRoute.joinTeam,        needOpenId: false },
+
+  getInvitableUsers: { handler: inviteRoute.getInvitableUsers, needOpenId: false },
+  sendInvite:        { handler: inviteRoute.sendInvite,        needOpenId: true  },
+  getInvites:        { handler: inviteRoute.getInvites,        needOpenId: false },
+  dismissInvite:     { handler: inviteRoute.dismissInvite,     needOpenId: false },
+
+  getMusic:        { handler: musicRoute.getMusic,       needOpenId: false },
+
+  getQuota:        { handler: quotaRoute.getQuota,       needOpenId: false },
+  addQuota:        { handler: quotaRoute.addQuota,       needOpenId: true  },
+};
+
+exports.main = async (event) => {
   const wxCtx  = cloud.getWXContext();
   const openId = wxCtx.OPENID;
+  const action = ACTIONS[event.action];
 
-  switch (event.action) {
+  if (!action) return { error: '未知指令' };
 
-    case 'bindAccount': {
-      const { gameName, password } = event;
-      return req(`${SERVER}/api/mp/bind`, 'POST', { gameName, password, openId });
-    }
-
-    case 'getQuota': {
-      const { userId } = event;
-      return req(`${SERVER}/api/mp/quota/${userId}`);
-    }
-
-    case 'addQuota': {
-      const { userId, accepted } = event;
-      return req(`${SERVER}/api/mp/quota/add`, 'POST', { userId, openId, accepted });
-    }
-
-    case 'getUserByOpenId': {
-      return req(`${SERVER}/api/mp/userByOpenId/${openId}`);
-    }
-
-    case 'getInvitableUsers': {
-      return req(`${SERVER}/api/mp/users/invitable`);
-    }
-
-    case 'sendInvite': {
-      const { fromUserId, targetUserId, teamId } = event;
-      return req(`${SERVER}/api/mp/invite`, 'POST', { fromUserId, targetUserId, teamId, fromOpenId: openId });
-    }
-
-    case 'getTeam': {
-      const { teamId } = event;
-      return req(`${SERVER}/api/teams/${teamId}`);
-    }
-
-    case 'getUser': {
-      const { userId } = event;
-      const users = await req(`${SERVER}/api/users`);
-      const user = Array.isArray(users) ? users.find(u => u.id === userId) : null;
-      return user ? { user } : { error: '用户不存在' };
-    }
-
-    case 'joinTeam': {
-      const { teamId, userId } = event;
-      return req(`${SERVER}/api/teams/${teamId}/join`, 'POST', { userId });
-    }
-
-    case 'getInvites': {
-      const { userId } = event;
-      return req(`${SERVER}/api/mp/invites/${userId}`);
-    }
-
-    case 'dismissInvite': {
-      const { userId, inviteId } = event;
-      return req(`${SERVER}/api/mp/invites/${userId}/${inviteId}`, 'DELETE');
-    }
-
-    default:
-      return { error: '未知指令' };
-  }
+  return action.needOpenId
+    ? action.handler(event, openId)
+    : action.handler(event);
 };

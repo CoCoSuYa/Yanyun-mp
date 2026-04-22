@@ -1,7 +1,6 @@
 .page { 
   background: var(--bg); 
   min-height: 100vh;
-  /* 使用网络加载的楷�?*/
   font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
 }
 .content { padding: 0 24rpx; }
@@ -12,7 +11,6 @@
   display: block; 
   font-size: 40rpx; 
   color: var(--gold-light); 
-  /* 使用网络加载的楷�?*/
   font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important; 
   font-weight: 700; 
   margin-bottom: 12rpx; 
@@ -28,4 +26,45 @@
 .form-item  { margin-bottom: 20rpx; }
 .form-label { display: block; font-size: 24rpx; color: var(--text-muted); margin-bottom: 10rpx; }
 .form-err   { display: block; font-size: 24rpx; color: #e05050; margin-top: 12rpx; }
+.form-hint  { display: block; font-size: 20rpx; color: var(--text-muted); margin-top: 6rpx; opacity: 0.7; }
 .info-text  { display: block; font-size: 22rpx; color: var(--text-muted); line-height: 1.8; }
+.req        { color: #e05050; font-size: 22rpx; }
+
+/* 注册弹窗 */
+.reg-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+}
+.reg-panel {
+  width: 100%;
+  background: #1a0f08;
+  border-top-left-radius: 24rpx;
+  border-top-right-radius: 24rpx;
+  padding: 32rpx 32rpx 48rpx;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.reg-title {
+  display: block;
+  font-size: 36rpx;
+  color: var(--gold-light);
+  font-weight: 700;
+  margin-bottom: 8rpx;
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
+}
+.reg-sub {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-muted);
+  margin-bottom: 28rpx;
+}
+.reg-btns {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 32rpx;
+}
+.reg-btns .btn { flex: 1; text-align: center; }

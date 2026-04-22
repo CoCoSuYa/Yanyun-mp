@@ -3,7 +3,6 @@ Component({
     selected: 0,
     list: [
       { pagePath: '/pages/tianming/tianming', icon: '令', text: '令牌殿' },
-      { pagePath: '/pages/jianghu/jianghu',   icon: '湖', text: '江湖令' },
       { pagePath: '/pages/shenfan/shenfan',   icon: '侠', text: '身份牌' },
     ]
   },

@@ -1,0 +1,10 @@
+{
+  "timeout": 20,
+  "envVariables": {
+    "MYSQL_HOST": "43.251.102.69",
+    "MYSQL_PORT": "3306",
+    "MYSQL_USER": "root",
+    "MYSQL_PASSWORD": "Xiaxue961124",
+    "MYSQL_DATABASE": "yanyun"
+  }
+}

@@ -1,3 +1,4 @@
+<bgm-player />
 <view class="tabbar">
   <view
     wx:for="{{list}}" wx:key="index"

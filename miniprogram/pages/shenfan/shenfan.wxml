@@ -64,6 +64,8 @@
         style="margin-top:32rpx"
         bindtap="onBind"
       >{{loading ? '验证中…' : '⚔ 身份核实'}}</view>
+
+      <view class="btn btn-ghost" style="margin-top:20rpx" bindtap="onOpenRegister">尚未入江湖？投名注册</view>
     </view>
 
     <view class="card">
@@ -73,5 +75,46 @@
 
   <view class="safe-bottom"></view>
 </view>
-<bgm-player />
+
+<!-- 注册弹窗 -->
+<view wx:if="{{showRegister}}" class="reg-mask" bindtap="onCloseRegister">
+  <view class="reg-panel" catchtap="">
+    <text class="reg-title">投名江湖</text>
+    <text class="reg-sub">注册百舸争流身份</text>
+
+    <view class="form-item">
+      <text class="form-label">游戏名 <text class="req">*</text></text>
+      <input class="form-input" placeholder="1-8个中文" placeholder-style="color:#6a5a44;font-size:26rpx;" value="{{regGameName}}" bindinput="onRegInputName" maxlength="8" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">百业名 <text class="req">*</text></text>
+      <input class="form-input" value="{{regGuildName}}" bindinput="onRegInputGuild" placeholder="仅限「百舸争流」" placeholder-style="color:#6a5a44;font-size:26rpx;" />
+      <text class="form-hint">非百舸争流成员无法使用此功能</text>
+    </view>
+    <view class="form-item">
+      <text class="form-label">主流派 <text class="req">*</text></text>
+      <input class="form-input" placeholder="最多2个汉字" placeholder-style="color:#6a5a44;font-size:26rpx;" value="{{regMainStyle}}" bindinput="onRegInputMain" maxlength="2" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">副流派</text>
+      <input class="form-input" placeholder="选填，最多2个汉字" placeholder-style="color:#6a5a44;font-size:26rpx;" value="{{regSubStyle}}" bindinput="onRegInputSub" maxlength="2" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">密码 <text class="req">*</text></text>
+      <input class="form-input" placeholder="至少6位" placeholder-style="color:#6a5a44;font-size:26rpx;" password="true" value="{{regPassword}}" bindinput="onRegInputPwd" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">确认密码 <text class="req">*</text></text>
+      <input class="form-input" placeholder="再次输入密码" placeholder-style="color:#6a5a44;font-size:26rpx;" password="true" value="{{regPassword2}}" bindinput="onRegInputPwd2" />
+    </view>
+
+    <text wx:if="{{regErr}}" class="form-err">{{regErr}}</text>
+
+    <view class="reg-btns">
+      <view class="btn btn-ghost" bindtap="onCloseRegister">拂袖而去</view>
+      <view class="btn btn-primary {{regLoading ? 'disabled' : ''}}" bindtap="onRegister">{{regLoading ? '投名中…' : '投名江湖'}}</view>
+    </view>
+  </view>
+</view>
+
 <invite-float id="inviteFloat" />

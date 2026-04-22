@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="page-hd">
+    <text class="page-hd-title">投名江湖</text>
+    <text class="page-hd-sub">注册百舸争流身份</text>
+  </view>
+
+  <view class="content">
+    <view class="form-card card">
+      <view class="form-item">
+        <text class="form-label">游戏名 <text class="req">*</text></text>
+        <input class="form-input" placeholder="1-8个中文" placeholder-style="color:#6a5a44;font-size:26rpx;" value="{{gameName}}" bindinput="onInputName" maxlength="8" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">百业名 <text class="req">*</text></text>
+        <input class="form-input" value="{{guildName}}" bindinput="onInputGuild" placeholder="仅限「百舸争流」" placeholder-style="color:#6a5a44;font-size:26rpx;" />
+        <text class="form-hint">非百舸争流成员无法使用此功能</text>
+      </view>
+      <view class="form-item">
+        <text class="form-label">主流派 <text class="req">*</text></text>
+        <input class="form-input" placeholder="最多2个汉字" placeholder-style="color:#6a5a44;font-size:26rpx;" value="{{mainStyle}}" bindinput="onInputMain" maxlength="2" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">副流派</text>
+        <input class="form-input" placeholder="选填，最多2个汉字" placeholder-style="color:#6a5a44;font-size:26rpx;" value="{{subStyle}}" bindinput="onInputSub" maxlength="2" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">密码 <text class="req">*</text></text>
+        <input class="form-input" placeholder="至少6位" placeholder-style="color:#6a5a44;font-size:26rpx;" password="true" value="{{password}}" bindinput="onInputPwd" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">确认密码 <text class="req">*</text></text>
+        <input class="form-input" placeholder="再次输入密码" placeholder-style="color:#6a5a44;font-size:26rpx;" password="true" value="{{password2}}" bindinput="onInputPwd2" />
+      </view>
+
+      <text wx:if="{{errMsg}}" class="form-err">{{errMsg}}</text>
+
+      <view class="btn btn-primary {{loading ? 'disabled' : ''}}" style="margin-top:32rpx" bindtap="onRegister">
+        {{loading ? '投名中…' : '投名江湖'}}
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="info-text">⚔ 注册后自动绑定当前微信，绑定仅用于关联通知，密码通过加密通道验证，不会被存储。</text>
+    </view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

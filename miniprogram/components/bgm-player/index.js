@@ -1,62 +1,92 @@
-const app = getApp();
+/**
+ * bgm-player 组件 — 可拖动悬浮 UI
+ * 通过 player 单例模块共享位置状态，切 tab 时同步拖动位置
+ */
+const player = require('./player');
 
 Component({
+  properties: {
+    draggable: { type: Boolean, value: true }
+  },
+
   data: {
-    isPlaying: false,
-    statusBarHeight: 20,
-    x: 16,
-    y: 28
+    playing: false,
+    songName: '',
+    showName: false,
+    posX: 8,
+    posY: 8,
+    moveAreaW: 375,
+    moveAreaH: 667
   },
 
   lifetimes: {
     attached() {
-      // 获取状态栏高度用于定位
-      if (app && app.globalData) {
-        const sHeight = app.globalData.statusBarHeight || 20;
-        this.setData({ 
-          statusBarHeight: sHeight,
-          x: 16, // 左侧留出一点边距
-          y: sHeight + 8 // 初始放在标题栏位置
-        });
-        
-        const bgm = app.globalData.bgm;
-        if (bgm) {
-          // 初始化状态
-          this.setData({ isPlaying: !bgm.paused });
+      this._calcMoveArea();
 
-          // 监听播放器事件（避免重复绑定，微信会自动管理多次绑定或可以用箭头函数保持上下文）
-          bgm.onPlay(() => {
-            this.setData({ isPlaying: true });
-          });
-          bgm.onPause(() => {
-            this.setData({ isPlaying: false });
-          });
-          bgm.onStop(() => {
-            this.setData({ isPlaying: false });
-          });
-          bgm.onEnded(() => {
-            this.setData({ isPlaying: false });
-          });
-          bgm.onError(() => {
-            this.setData({ isPlaying: false });
-          });
-        }
+      // 从全局单例恢复拖动位置
+      const savedPos = player.getPos();
+      if (savedPos) {
+        this.setData({ posX: savedPos.x, posY: savedPos.y });
+      } else {
+        // 首次：定位在状态栏下方
+        try {
+          const menu = wx.getMenuButtonBoundingClientRect();
+          if (menu && menu.top) {
+            this.setData({ posY: menu.top });
+          }
+        } catch (e) {}
       }
+
+      // 同步初始播放状态
+      const s = player.getState();
+      this.setData({
+        playing: s.playing,
+        songName: s.songName || '',
+        showName: !!s.songName
+      });
+
+      // 监听播放器状态变化
+      this._offListener = player.on('stateChange', (data) => {
+        const patch = {};
+        if ('playing' in data) patch.playing = data.playing;
+        if ('songName' in data) {
+          patch.songName = data.songName;
+          patch.showName = !!data.songName;
+        }
+        if (Object.keys(patch).length) this.setData(patch);
+      });
+    },
+
+    detached() {
+      if (this._offListener) this._offListener();
     }
   },
 
   methods: {
-    togglePlay() {
-      if (!app || !app.globalData || !app.globalData.bgm) {
-        if (app) app.initBGM(); // 如果因为异常没有初始化，重新初始化一把
-        return;
-      }
-      
-      const bgm = app.globalData.bgm;
-      if (bgm.paused) {
-        bgm.play();
-      } else {
-        bgm.pause();
+    _calcMoveArea() {
+      try {
+        const sys = wx.getWindowInfo();
+        this.setData({
+          moveAreaW: sys.windowWidth,
+          moveAreaH: sys.windowHeight
+        });
+      } catch (e) {}
+    },
+
+    onToggle() {
+      player.toggle();
+    },
+
+    onNext() {
+      player.next();
+    },
+
+    onMoveEnd(e) {
+      if (e.detail) {
+        const pos = { x: e.detail.x, y: e.detail.y };
+        this.setData({ posX: pos.x, posY: pos.y });
+        // 持久化到全局单例，下次 attached 恢复
+        player.setPos(pos);
       }
     }
   }

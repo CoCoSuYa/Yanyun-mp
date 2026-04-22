@@ -1,0 +1,127 @@
+/* 注册页 - 武侠古风风格 */
+@import '../shenfan/shenfan.wxss';
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1a1208 0%, #2a1f10 100%);
+  color: #e8d5b0;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-hd {
+  text-align: center;
+  padding: 80rpx 40rpx 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-hd-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #f0d9a0;
+  letter-spacing: 8rpx;
+}
+
+.page-hd-sub {
+  display: block;
+  font-size: 26rpx;
+  color: #a09070;
+  margin-top: 12rpx;
+}
+
+.content {
+  padding: 0 32rpx;
+  width: 100%;
+  max-width: 680rpx;
+  box-sizing: border-box;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1rpx solid rgba(240, 217, 160, 0.15);
+  border-radius: 16rpx;
+  padding: 40rpx 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.form-item {
+  margin-bottom: 28rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 26rpx;
+  color: #c0a880;
+  margin-bottom: 8rpx;
+}
+
+.req {
+  color: #cc4444;
+}
+
+.form-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1rpx solid rgba(240, 217, 160, 0.2);
+  border-radius: 8rpx;
+  padding: 16rpx 20rpx;
+  color: #e8d5b0;
+  font-size: 28rpx;
+}
+
+.form-hint {
+  display: block;
+  font-size: 22rpx;
+  color: #807060;
+  margin-top: 6rpx;
+}
+
+.form-err {
+  display: block;
+  color: #cc4444;
+  font-size: 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.btn {
+  text-align: center;
+  padding: 20rpx 0;
+  border-radius: 8rpx;
+  font-size: 30rpx;
+  letter-spacing: 4rpx;
+  transition: opacity 0.2s;
+}
+
+.btn:active {
+  opacity: 0.8;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #8b6914, #a07828);
+  color: #fff;
+  border: 1rpx solid #a07828;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #a09070;
+  border: 1rpx solid rgba(240, 217, 160, 0.2);
+}
+
+.btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.info-text {
+  font-size: 22rpx;
+  color: #807060;
+  line-height: 1.6;
+}
+
+.safe-bottom {
+  height: 40rpx;
+}

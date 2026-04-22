@@ -29,5 +29,5 @@
 
   <view class="safe-bottom"></view>
 </view>
-<bgm-player />
+
 <invite-float id="inviteFloat" />

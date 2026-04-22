@@ -1,1 +1,6 @@
-{ "component": true }
+{
+  "component": true,
+  "usingComponents": {
+    "bgm-player": "../components/bgm-player/index"
+  }
+}

@@ -4,15 +4,18 @@
     "pages/jianghu/jianghu",
     "pages/shenfan/shenfan",
     "pages/invite/invite",
+    "pages/register/register",
     "pages/logs/logs"
   ],
   "tabBar": {
     "custom": true,
     "list": [
       { "pagePath": "pages/tianming/tianming" },
-      { "pagePath": "pages/jianghu/jianghu" },
       { "pagePath": "pages/shenfan/shenfan" }
     ]
+  },
+  "usingComponents": {
+    "bgm-player": "/components/bgm-player/index"
   },
   "window": {
     "backgroundTextStyle": "light",
