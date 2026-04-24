@@ -1,26 +1,39 @@
 /**
  * BGM 播放器 — 全局单例模块
  * 在 app.js 中调用 init() 和 loadPlaylist() 初始化
- * bgm-player 组件通过 require 引用同一个实例
+ * custom-tab-bar 直接 require 引用同一个实例
  */
-const { SERVER_URL } = require('./config');
+const { SERVER_URL } = require('../config');
 
-// 单例对象
 const bgm = {
   playlist: [],
   currentIndex: -1,
   innerAudio: null,
   _listeners: [],
 
+  // UI 状态（tab-bar 共享）
+  playing: false,
+  songName: '',
+
   init() {
     this.innerAudio = wx.createInnerAudioContext();
-    this.innerAudio.onPlay(() => this._emit({ playing: true }));
-    this.innerAudio.onPause(() => this._emit({ playing: false }));
-    this.innerAudio.onStop(() => this._emit({ playing: false }));
+    this.innerAudio.onPlay(() => {
+      this.playing = true;
+      this._emit();
+    });
+    this.innerAudio.onPause(() => {
+      this.playing = false;
+      this._emit();
+    });
+    this.innerAudio.onStop(() => {
+      this.playing = false;
+      this._emit();
+    });
     this.innerAudio.onEnded(() => this.next());
     this.innerAudio.onError((err) => {
       console.error('[BGM] 播放错误', err);
-      this._emit({ playing: false });
+      this.playing = false;
+      this._emit();
     });
   },
 
@@ -47,9 +60,10 @@ const bgm = {
     if (!this.playlist.length) return;
     this.currentIndex = (this.currentIndex + 1) % this.playlist.length;
     const track = this.playlist[this.currentIndex];
+    this.songName = track.name || '';
     this.innerAudio.src = track.url;
     this.innerAudio.play();
-    this._emit({ songName: track.name || '' });
+    this._emit();
   },
 
   toggle() {
@@ -61,41 +75,23 @@ const bgm = {
     }
   },
 
-  getState() {
-    const track = this.playlist[this.currentIndex] || {};
-    return {
-      playing: this.innerAudio ? !this.innerAudio.paused : false,
-      songName: track.name || ''
-    };
-  },
-
-  // ---- 拖动位置持久化（切 tab 时跨组件实例同步） ----
+  // 拖动位置
   _pos: null,
 
-  setPos(pos) {
-    this._pos = pos;
+  setPos(pos) { this._pos = pos; },
+
+  getPos() { return this._pos; },
+
+  /** 注册 UI 刷新回调 */
+  onUpdate(fn) {
+    this._listeners.push(fn);
+    return () => { this._listeners = this._listeners.filter(f => f !== fn); };
   },
 
-  getPos() {
-    return this._pos;
-  },
-
-  // ---- 事件系统 ----
-
-  on(event, fn) {
-    this._listeners.push({ event, fn });
-    return () => { this._listeners = this._listeners.filter(l => l.fn !== fn); };
-  },
-
-  off(event, fn) {
-    this._listeners = this._listeners.filter(l => l.event !== event || l.fn !== fn);
-  },
-
-  _emit(data) {
-    this._listeners.forEach(l => {
-      if (l.event === 'stateChange') {
-        try { l.fn(data); } catch (e) { console.error('[BGM] listener error', e); }
-      }
+  _emit() {
+    const state = { playing: this.playing, songName: this.songName };
+    this._listeners.forEach(fn => {
+      try { fn(state); } catch (e) { console.error('[BGM] listener error', e); }
     });
   }
 };

@@ -1,4 +1,23 @@
-<bgm-player />
+<!-- 悬浮 bgm 播放器 -->
+<view
+  class="bgm-bar {{dragging ? 'dragging' : ''}}"
+  style="left:{{bgmLeft}}px;top:{{bgmTop}}px;"
+  catchtouchstart="onBgmTouchStart"
+  catchtouchmove="onBgmTouchMove"
+  catchtouchend="onBgmTouchEnd"
+>
+  <view class="bgm-btn" catchtap="onBgmToggle">
+    <text class="bgm-icon">{{playing ? '⏸' : '▶'}}</text>
+  </view>
+  <view class="bgm-btn" catchtap="onBgmNext">
+    <text class="bgm-icon">⏭</text>
+  </view>
+  <view wx:if="{{songName}}" class="bgm-name-wrap">
+    <text class="bgm-name">{{songName}}</text>
+  </view>
+</view>
+
+<!-- 底部 tab 栏 -->
 <view class="tabbar">
   <view
     wx:for="{{list}}" wx:key="index"

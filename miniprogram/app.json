@@ -14,9 +14,7 @@
       { "pagePath": "pages/shenfan/shenfan" }
     ]
   },
-  "usingComponents": {
-    "bgm-player": "/components/bgm-player/index"
-  },
+  "usingComponents": {},
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#1a0f08",

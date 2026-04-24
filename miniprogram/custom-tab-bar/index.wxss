@@ -1,3 +1,53 @@
+/* ===== bgm 悬浮播放器 ===== */
+.bgm-bar {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  background: rgba(26, 15, 8, 0.88);
+  border-radius: 28rpx;
+  padding: 6rpx 14rpx;
+  gap: 6rpx;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  transition: box-shadow 0.2s;
+}
+.bgm-bar.dragging {
+  box-shadow: 0 4rpx 24rpx rgba(200, 168, 75, 0.3);
+}
+
+.bgm-btn {
+  width: 52rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+.bgm-icon {
+  font-size: 24rpx;
+  color: #f0d882;
+  line-height: 1;
+}
+
+.bgm-name-wrap {
+  overflow: hidden;
+  flex-shrink: 1;
+  max-width: 160rpx;
+}
+.bgm-name {
+  display: block;
+  font-size: 20rpx;
+  color: #c8a84b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
+}
+
+/* ===== 底部 tab 栏 ===== */
 .tabbar {
   display: flex;
   height: 100rpx;
@@ -15,7 +65,6 @@
 .tab-icon {
   font-size: 32rpx;
   color: #8a7050;
-  /* 使用网络加载的楷�?*/
   font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
   font-weight: 700;
   line-height: 1;
@@ -24,7 +73,6 @@
   font-size: 20rpx;
   color: #8a7050;
   letter-spacing: 1rpx;
-  /* 使用网络加载的楷�?*/
   font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
 }
 .tab-item.active .tab-icon,
