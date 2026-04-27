@@ -3,7 +3,7 @@
  * 在 app.js 中调用 init() 和 loadPlaylist() 初始化
  * custom-tab-bar 直接 require 引用同一个实例
  */
-const { SERVER_URL } = require('../config');
+const { SERVER_URL } = require('./config');
 
 const bgm = {
   playlist: [],
@@ -58,9 +58,18 @@ const bgm = {
 
   next() {
     if (!this.playlist.length) return;
-    this.currentIndex = (this.currentIndex + 1) % this.playlist.length;
+    // 随机切歌，排除当前曲目
+    let idx;
+    if (this.playlist.length === 1) {
+      idx = 0;
+    } else {
+      do {
+        idx = Math.floor(Math.random() * this.playlist.length);
+      } while (idx === this.currentIndex);
+    }
+    this.currentIndex = idx;
     const track = this.playlist[this.currentIndex];
-    this.songName = track.name || '';
+    this.songName = track.name || track.title || '';
     this.innerAudio.src = track.url;
     this.innerAudio.play();
     this._emit();
@@ -75,21 +84,22 @@ const bgm = {
     }
   },
 
-  // 拖动位置
   _pos: null,
 
-  setPos(pos) { this._pos = pos; },
+  setPos(pos) {
+    this._pos = pos;
+    this._emit();  // 立刻广播给所有实例，消除切 tab 时的位置闪烁
+  },
 
   getPos() { return this._pos; },
 
-  /** 注册 UI 刷新回调 */
   onUpdate(fn) {
     this._listeners.push(fn);
     return () => { this._listeners = this._listeners.filter(f => f !== fn); };
   },
 
   _emit() {
-    const state = { playing: this.playing, songName: this.songName };
+    const state = { playing: this.playing, songName: this.songName, pos: this._pos };
     this._listeners.forEach(fn => {
       try { fn(state); } catch (e) { console.error('[BGM] listener error', e); }
     });

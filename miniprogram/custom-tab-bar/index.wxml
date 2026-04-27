@@ -1,19 +1,38 @@
+<wxs module="drag" src="./drag.wxs"></wxs>
+
 <!-- 悬浮 bgm 播放器 -->
 <view
-  class="bgm-bar {{dragging ? 'dragging' : ''}}"
+  class="bgm-bar"
   style="left:{{bgmLeft}}px;top:{{bgmTop}}px;"
-  catchtouchstart="onBgmTouchStart"
-  catchtouchmove="onBgmTouchMove"
-  catchtouchend="onBgmTouchEnd"
+  hidden="{{!pageActive}}"
+  bgmleft="{{bgmLeft}}"
+  change:bgmleft="{{drag.onSync}}"
+  data-left="{{bgmLeft}}"
+  data-top="{{bgmTop}}"
+  data-maxx="{{_maxX}}"
+  data-maxy="{{_maxY}}"
+  bindtouchstart="{{drag.start}}"
+  catchtouchmove="{{drag.move}}"
+  bindtouchend="{{drag.end}}"
 >
-  <view class="bgm-btn" catchtap="onBgmToggle">
-    <text class="bgm-icon">{{playing ? '⏸' : '▶'}}</text>
+  <view class="bgm-btn" hover-class="bgm-btn-active" catchtap="onBgmToggle">
+    <view wx:if="{{playing}}" class="icon-pause">
+      <view class="pause-bar"></view>
+      <view class="pause-bar"></view>
+    </view>
+    <view wx:else class="icon-play"></view>
   </view>
-  <view class="bgm-btn" catchtap="onBgmNext">
-    <text class="bgm-icon">⏭</text>
+  <view class="bgm-btn" hover-class="bgm-btn-active" catchtap="onBgmNext">
+    <view class="icon-next">
+      <view class="next-tri"></view>
+      <view class="next-bar"></view>
+    </view>
   </view>
   <view wx:if="{{songName}}" class="bgm-name-wrap">
-    <text class="bgm-name">{{songName}}</text>
+    <view class="bgm-name-inner">
+      <text class="bgm-name">{{songName}}</text>
+      <text class="bgm-name">{{songName}}</text>
+    </view>
   </view>
 </view>
 

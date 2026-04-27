@@ -1,5 +1,5 @@
-.page { 
-  background: var(--bg); 
+.page {
+  background: var(--bg);
   min-height: 100vh;
 }
 .content { padding: 0 24rpx; }
@@ -23,38 +23,50 @@
 
 .tip-box { padding: 80rpx 48rpx; text-align: center; }
 .tip-icon { display: block; font-size: 64rpx; margin-bottom: 20rpx; }
-.tip-text { 
-  display: block; 
-  font-size: 36rpx; 
-  color: var(--gold-light); 
-  margin-bottom: 16rpx; 
+.tip-text {
+  display: block;
+  font-size: 36rpx;
+  color: var(--gold-light);
+  margin-bottom: 16rpx;
 }
 .tip-sub  { display: block; font-size: 24rpx; color: var(--text-muted); white-space: pre-line; margin-bottom: 40rpx; }
 
 .tip-card { margin: 0 24rpx 24rpx; }
 .tip-card-text { font-size: 24rpx; color: var(--text-muted); line-height: 1.8; letter-spacing: 1rpx; }
 
-.progress-bar-wrap {
-  margin: 0 24rpx 16rpx;
-  height: 16rpx;
-  background: rgba(255,255,255,.08);
-  border-radius: 8rpx;
-  overflow: hidden;
-  position: relative;
+/* 轮次指示器 */
+.round-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 24rpx 20rpx;
+  gap: 16rpx;
 }
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #6b3a10, #c8a84b);
-  border-radius: 8rpx;
-  transition: width .3s;
+.round-dots {
+  display: flex;
+  gap: 24rpx;
 }
-.progress-label {
-  display: block;
-  text-align: center;
-  font-size: 22rpx;
+.round-dot {
+  width: 24rpx; height: 24rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  transition: background .3s;
+}
+.round-dot.active {
+  background: rgba(200,168,75,.3);
+  border-color: var(--gold-light);
+}
+.round-dot.done {
+  background: linear-gradient(135deg, #6b3a10, #c8a84b);
+  border-color: var(--gold-light);
+}
+.round-label {
+  font-size: 24rpx;
   color: var(--text-muted);
-  margin: 8rpx 24rpx 16rpx;
+  letter-spacing: 2rpx;
 }
+
 .session-tip {
   text-align: center;
   font-size: 26rpx;
@@ -62,28 +74,3 @@
   margin: 0 24rpx 16rpx;
 }
 .session-count { color: var(--gold-light); font-weight: 700; }
-
-.mask {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.72);
-  z-index: 200;
-  display: flex; align-items: center; justify-content: center;
-}
-.picker-box {
-  width: 680rpx;
-  background: linear-gradient(180deg, #281a0c, #1e1208);
-  border: 1px solid var(--border-hi);
-  border-radius: 24rpx;
-  padding: 40rpx 32rpx;
-}
-.picker-title { display: block; text-align: center; font-size: 36rpx; color: var(--gold-light); letter-spacing: 4rpx; margin-bottom: 12rpx; }
-.picker-sub   { display: block; text-align: center; font-size: 22rpx; color: var(--text-muted); margin-bottom: 32rpx; letter-spacing: 1rpx; }
-.count-grid { display: flex; flex-wrap: wrap; gap: 16rpx; justify-content: center; }
-.count-item {
-  width: 140rpx; height: 80rpx;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 12rpx;
-  font-size: 28rpx; color: var(--text-sec);
-  background: rgba(0,0,0,.3);
-}

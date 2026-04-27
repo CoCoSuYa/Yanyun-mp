@@ -37,8 +37,8 @@ Page({
     }
     const user = wx.getStorageSync('boundUser');
     this.setData({ boundUser: user || null, errMsg: '' });
-    const float = this.selectComponent('#inviteFloat');
-    if (float) float.refresh();
+    const tb = this.getTabBar && this.getTabBar();
+    if (tb && tb.syncBgmState) tb.syncBgmState();
   },
 
   // ===== 登录 =====

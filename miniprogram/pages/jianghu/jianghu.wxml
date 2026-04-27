@@ -30,4 +30,3 @@
   <view class="safe-bottom"></view>
 </view>
 
-<invite-float id="inviteFloat" />

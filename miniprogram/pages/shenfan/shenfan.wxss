@@ -34,19 +34,24 @@
 .reg-mask {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.72);
   z-index: 100;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
+  /* 底部向上偏移 tab 栏高度，让弹窗视觉上居中于可用区域 */
+  padding: 32rpx 24rpx 132rpx;
+  box-sizing: border-box;
 }
 .reg-panel {
   width: 100%;
-  background: #1a0f08;
-  border-top-left-radius: 24rpx;
-  border-top-right-radius: 24rpx;
-  padding: 32rpx 32rpx 48rpx;
-  max-height: 85vh;
+  background: linear-gradient(180deg, #281a0c, #1e1208);
+  border: 1rpx solid var(--border-hi);
+  border-radius: 24rpx;
+  padding: 40rpx 32rpx 40rpx;
+  max-height: 78vh;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 .reg-title {
   display: block;

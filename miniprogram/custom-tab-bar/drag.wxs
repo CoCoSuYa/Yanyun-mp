@@ -1,0 +1,52 @@
+var _startX = 0, _startY = 0;
+var _moving = false;
+
+function start(e, owner) {
+  var t = e.touches[0];
+  _startX = t.clientX;
+  _startY = t.clientY;
+  _moving = false;
+}
+
+function move(e, owner) {
+  var t  = e.touches[0];
+  var dx = t.clientX - _startX;
+  var dy = t.clientY - _startY;
+  if (!_moving && dx * dx + dy * dy < 25) return;
+  if (!_moving) {
+    _moving = true;
+    e.instance.addClass('dragging');
+  }
+  e.instance.setStyle({ transform: 'translate(' + dx + 'px,' + dy + 'px)' });
+}
+
+function end(e, owner) {
+  e.instance.removeClass('dragging');
+  if (_moving) {
+    var t  = e.changedTouches[0];
+    var dx = t.clientX - _startX;
+    var dy = t.clientY - _startY;
+    var ds = e.instance.getDataset();
+    var startLeft = parseFloat(ds.left) || 0;
+    var startTop  = parseFloat(ds.top)  || 0;
+    var maxX = parseFloat(ds.maxx) || 300;
+    var maxY = parseFloat(ds.maxy) || 700;
+    var finalLeft = startLeft + dx;
+    var finalTop  = startTop  + dy;
+    if (finalLeft < 0)    finalLeft = 0;
+    if (finalLeft > maxX) finalLeft = maxX;
+    if (finalTop  < 0)    finalTop  = 0;
+    if (finalTop  > maxY) finalTop  = maxY;
+    // 不在此处归零 transform：元素视觉位置已正确（startLeft+dx = finalLeft）
+    // onSync 会在 JS setData 更新 bgmLeft 的同一帧内归零 transform，彻底消除闪烁
+    owner.callMethod('onBgmDragEnd', { left: finalLeft, top: finalTop });
+  }
+  _moving = false;
+}
+
+// 当 bgmLeft 通过 setData 变化时，由 change:bgmleft 触发，与 WXML left/top 更新同帧执行
+function onSync(newVal, oldVal, ownerInstance, instance) {
+  instance.setStyle({ transform: 'translate(0,0)' });
+}
+
+module.exports = { start: start, move: move, end: end, onSync: onSync };

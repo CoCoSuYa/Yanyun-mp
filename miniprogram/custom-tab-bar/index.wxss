@@ -25,11 +25,54 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
-.bgm-icon {
-  font-size: 24rpx;
-  color: #f0d882;
-  line-height: 1;
+.bgm-btn-active {
+  transform: scale(0.8);
+  background: rgba(240, 216, 130, 0.25);
+}
+
+/* 播放（三角形） */
+.icon-play {
+  width: 0;
+  height: 0;
+  border-top: 8rpx solid transparent;
+  border-bottom: 8rpx solid transparent;
+  border-left: 14rpx solid #f0d882;
+  margin-left: 3rpx;
+}
+
+/* 暂停（两竖条） */
+.icon-pause {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+.pause-bar {
+  width: 4rpx;
+  height: 16rpx;
+  background: #f0d882;
+  border-radius: 2rpx;
+}
+
+/* 切歌（三角 + 竖条） */
+.icon-next {
+  display: flex;
+  align-items: center;
+  gap: 2rpx;
+}
+.next-tri {
+  width: 0;
+  height: 0;
+  border-top: 7rpx solid transparent;
+  border-bottom: 7rpx solid transparent;
+  border-left: 12rpx solid #f0d882;
+}
+.next-bar {
+  width: 3rpx;
+  height: 14rpx;
+  background: #f0d882;
+  border-radius: 2rpx;
 }
 
 .bgm-name-wrap {
@@ -37,14 +80,22 @@
   flex-shrink: 1;
   max-width: 160rpx;
 }
+.bgm-name-inner {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee-scroll 10s linear infinite;
+}
 .bgm-name {
-  display: block;
+  display: inline-block;
   font-size: 20rpx;
   color: #c8a84b;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding-right: 1.5em;
   font-family: 'STKaiti', 'KaiTi', 'SimKai', 'FangSong', 'STFangsong', serif !important;
+}
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* ===== 底部 tab 栏 ===== */

@@ -17,8 +17,6 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar().setData) {
       this.getTabBar().setData({ selected: 1 });
     }
-    const float = this.selectComponent('#inviteFloat');
-    if (float) float.refresh();
   },
 
   onCopy() {
