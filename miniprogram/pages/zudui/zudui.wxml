@@ -1,0 +1,143 @@
+<view class="page">
+  <view class="page-hd" style="padding-top: {{statusBarHeight}}px; margin-top: 20rpx;">
+    <text class="page-hd-title">聚义堂</text>
+    <text class="page-hd-sub">江湖组队 · 并肩作战</text>
+  </view>
+
+  <!-- 未绑定提示 -->
+  <view wx:if="{{!isBound}}" class="tip-box">
+    <text class="tip-icon">⚔</text>
+    <text class="tip-text">尚未绑定江湖身份</text>
+    <text class="tip-sub">绑定账号后，方可组队出征</text>
+    <view class="btn btn-primary" bindtap="goToBind">前往侠客居</view>
+  </view>
+
+  <!-- 日期选择器 -->
+  <view wx:if="{{isBound}}" class="date-bar">
+    <scroll-view scroll-x class="date-scroll" scroll-into-view="{{scrollIntoDate}}" enhanced show-scrollbar="{{false}}">
+      <view class="date-row">
+        <view
+          wx:for="{{dateList}}"
+          wx:key="date"
+          id="date-{{item.date}}"
+          class="date-btn {{selectedDate === item.date ? 'active' : ''}} {{item.isPast ? 'past' : ''}} {{item.isToday ? 'today' : ''}}"
+          bindtap="onSelectDate"
+          data-date="{{item.date}}"
+        >
+          <text class="dd">{{item.day}}</text>
+          <text class="dw">{{item.label}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 队伍列表（仅此区域可滚动） -->
+  <scroll-view wx:if="{{isBound}}" class="teams-wrap" scroll-y enhanced show-scrollbar="{{false}}">
+    <text class="date-label">{{dateLabelText}}</text>
+
+    <view wx:if="{{loading}}" class="empty-tip">
+      <text>江湖消息传递中…</text>
+    </view>
+
+    <view wx:elif="{{!filteredTeams.length}}" class="empty-tip">
+      <text>{{emptyTip}}</text>
+    </view>
+
+    <view
+      wx:for="{{filteredTeams}}"
+      wx:key="id"
+      class="team-card {{item._isMine ? 'mine' : ''}} {{item._isFull ? 'full' : ''}}"
+      bindtap="onCardTap"
+      data-team-id="{{item.id}}"
+    >
+      <view class="team-top">
+        <text class="tag-purpose">{{item.purpose}}</text>
+        <text class="tag-type">{{item.type}}</text>
+        <text class="tag-time">⏰ {{item._timeStr}}</text>
+      </view>
+      <view class="members-row">
+        <block wx:for="{{item._slots}}" wx:for-item="slot" wx:key="idx">
+          <view wx:if="{{slot.empty}}" class="slot empty">
+            <text>虚位</text>
+          </view>
+          <view wx:else class="slot {{slot.isLeader ? 'leader' : ''}}">
+            <text class="sn">{{slot.gameName}}</text>
+            <text class="sm">{{slot.mainStyle}}</text>
+            <text wx:if="{{slot.subStyle}}" class="ss">{{slot.subStyle}}</text>
+          </view>
+        </block>
+      </view>
+      <view class="card-foot">
+        <text class="count-tag {{item._isFull ? 'full-tag' : ''}}">{{item.members.length}}/{{item.maxSize}} 人{{item._isFull ? ' · 已满员' : ''}}</text>
+      </view>
+    </view>
+    <view style="height:100rpx"></view>
+  </scroll-view>
+
+  <!-- 底部按钮（固定在底部，不跟随滚动） -->
+  <view wx:if="{{isBound}}" class="bottom-bar">
+    <view class="btn btn-primary create-btn" bindtap="onCreateTap">⚔ 聚义成队</view>
+  </view>
+
+  <!-- 创建/编辑队伍弹窗 -->
+  <view wx:if="{{showCreate}}" class="modal-mask" bindtap="onCloseCreate">
+    <view class="modal-box" catchtap="">
+      <text class="modal-title">{{_isEditMode ? '修改时间' : '聚义成队'}}</text>
+
+      <block wx:if="{{!_isEditMode}}">
+        <view class="form-group">
+          <text class="form-label">预约人数</text>
+          <picker mode="selector" range="{{typeOptions}}" value="{{typeIndex}}" bindchange="onTypeChange">
+            <view class="form-picker">{{typeOptions[typeIndex]}}</view>
+          </picker>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">打本目的</text>
+          <picker mode="selector" range="{{purposeOptions}}" value="{{purposeIndex}}" bindchange="onPurposeChange">
+            <view class="form-picker">{{purposeOptions[purposeIndex]}}</view>
+          </picker>
+        </view>
+      </block>
+
+      <view class="form-group">
+        <text class="form-label">打本日期</text>
+        <picker mode="selector" range="{{createDateOptions}}" range-key="label" value="{{createDateIndex}}" bindchange="onCreateDateChange">
+          <view class="form-picker">{{createDateOptions[createDateIndex].label}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">开本时间</text>
+        <picker mode="selector" range="{{hourOptions}}" value="{{hourIndex}}" bindchange="onHourChange">
+          <view class="form-picker">{{hourOptions[hourIndex]}}</view>
+        </picker>
+      </view>
+
+      <text class="form-hint">仅可选择未来 7 天</text>
+
+      <view class="modal-btns">
+        <view class="btn btn-ghost" bindtap="onCloseCreate">拂袖而去</view>
+        <view class="btn btn-primary" bindtap="onSubmitCreate">{{_isEditMode ? '确认修改' : '聚义成队'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作弹窗 -->
+  <view wx:if="{{showActions}}" class="modal-mask" bindtap="onCloseActions">
+    <view class="action-sheet" catchtap="">
+      <view
+        wx:for="{{actionList}}"
+        wx:key="label"
+        class="action-item {{item.danger ? 'danger' : ''}}"
+        bindtap="onActionTap"
+        data-index="{{index}}"
+      >
+        <text>{{item.label}}</text>
+      </view>
+      <view class="action-item cancel" bindtap="onCloseActions">
+        <text>取消</text>
+      </view>
+    </view>
+  </view>
+</view>

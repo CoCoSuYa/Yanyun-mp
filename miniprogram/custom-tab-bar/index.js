@@ -5,7 +5,8 @@ Component({
     selected: 0,
     list: [
       { pagePath: '/pages/tianming/tianming', icon: '令', text: '令牌殿' },
-      { pagePath: '/pages/shenfan/shenfan',   icon: '侠', text: '身份牌' },
+      { pagePath: '/pages/zudui/zudui',      icon: '聚', text: '聚义堂' },
+      { pagePath: '/pages/shenfan/shenfan',   icon: '侠', text: '侠客居' },
     ],
     playing:    false,
     songName:   '',

@@ -6,6 +6,7 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const userRoute    = require('./routes/user');
 const teamRoute    = require('./routes/team');
+const signinRoute  = require('./routes/signin');
 const inviteRoute  = require('./routes/invite');
 const musicRoute   = require('./routes/music');
 const quotaRoute   = require('./routes/quota');
@@ -18,8 +19,16 @@ const ACTIONS = {
   getUserByOpenId: { handler: userRoute.getUserByOpenId, needOpenId: true  },
   getUser:         { handler: userRoute.getUser,         needOpenId: false },
 
+  getTeams:        { handler: teamRoute.getTeams,        needOpenId: false },
   getTeam:         { handler: teamRoute.getTeam,         needOpenId: false },
+  createTeam:      { handler: teamRoute.createTeam,      needOpenId: false },
   joinTeam:        { handler: teamRoute.joinTeam,        needOpenId: false },
+  leaveTeam:       { handler: teamRoute.leaveTeam,       needOpenId: false },
+  changeTeamTime:  { handler: teamRoute.changeTeamTime,  needOpenId: false },
+  dissolveTeam:    { handler: teamRoute.dissolveTeam,    needOpenId: false },
+
+  signIn:          { handler: signinRoute.signIn,          needOpenId: false },
+  getSignInStatus: { handler: signinRoute.getSignInStatus, needOpenId: false },
 
   getInvitableUsers: { handler: inviteRoute.getInvitableUsers, needOpenId: false },
   sendInvite:        { handler: inviteRoute.sendInvite,        needOpenId: true  },

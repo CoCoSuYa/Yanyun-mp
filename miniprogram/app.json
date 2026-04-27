@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/tianming/tianming",
+    "pages/zudui/zudui",
     "pages/jianghu/jianghu",
     "pages/shenfan/shenfan",
     "pages/invite/invite",
@@ -11,6 +12,7 @@
     "custom": true,
     "list": [
       { "pagePath": "pages/tianming/tianming" },
+      { "pagePath": "pages/zudui/zudui" },
       { "pagePath": "pages/shenfan/shenfan" }
     ]
   },

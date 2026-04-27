@@ -1,0 +1,249 @@
+.page {
+  background: var(--bg);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-bottom: 100rpx;
+}
+
+/* 未绑定提示 */
+.tip-box { padding: 80rpx 48rpx; text-align: center; }
+.tip-icon { display: block; font-size: 64rpx; margin-bottom: 20rpx; }
+.tip-text {
+  display: block; font-size: 36rpx; color: var(--gold-light);
+  margin-bottom: 16rpx;
+}
+.tip-sub {
+  display: block; font-size: 24rpx; color: var(--text-muted);
+  white-space: pre-line; margin-bottom: 40rpx;
+}
+
+/* ===== 日期选择器 ===== */
+.date-bar {
+  background: #18100a;
+  flex-shrink: 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.date-scroll {
+  white-space: nowrap;
+}
+.date-row {
+  display: flex;
+  padding: 16rpx 24rpx;
+  gap: 12rpx;
+}
+.date-btn {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  border-radius: 14rpx;
+  border: 1rpx solid transparent;
+  min-width: 100rpx;
+}
+.date-btn.active {
+  background: linear-gradient(135deg, #3a2510, #241608);
+  border-color: var(--gold);
+}
+.date-btn.past { opacity: 0.5; }
+.date-btn .dd {
+  font-size: 34rpx; font-weight: 700; color: var(--gold-light); line-height: 1;
+}
+.date-btn .dw {
+  font-size: 20rpx; color: var(--text-muted); margin-top: 6rpx;
+}
+.date-btn.today .dw { color: #e05050; }
+.date-btn.active .dd { color: var(--gold); }
+
+/* ===== 队伍列表区（scroll-view） ===== */
+.teams-wrap {
+  flex: 1;
+  min-height: 0;
+  padding: 0 28rpx;
+  box-sizing: border-box;
+}
+.date-label {
+  text-align: center; font-size: 30rpx; color: var(--gold);
+  letter-spacing: 4rpx; margin: 28rpx 0;
+  padding-bottom: 16rpx; border-bottom: 1rpx solid var(--border);
+}
+.empty-tip {
+  text-align: center; color: var(--text-muted);
+  padding: 120rpx 40rpx; font-size: 28rpx;
+  letter-spacing: 2rpx; line-height: 2;
+  white-space: pre-line;
+}
+
+/* ===== 队伍卡片 ===== */
+.team-card {
+  background: linear-gradient(135deg, #2a1a0a, #1e1208);
+  border: 1rpx solid var(--border);
+  border-radius: 18rpx;
+  padding: 26rpx;
+  margin-bottom: 22rpx;
+}
+.team-card.mine {
+  border-color: rgba(200, 164, 94, 0.5);
+  background: linear-gradient(135deg, #362012, #271508);
+}
+.team-card.full { opacity: 0.72; }
+
+.team-top {
+  display: flex; align-items: center; gap: 16rpx;
+  margin-bottom: 20rpx; flex-wrap: wrap;
+}
+.tag-purpose {
+  background: linear-gradient(135deg, var(--red), #5a1010);
+  color: #f0ccc0; font-size: 22rpx;
+  padding: 6rpx 16rpx; border-radius: 6rpx;
+  letter-spacing: 2rpx; flex-shrink: 0;
+}
+.tag-type {
+  color: var(--gold-light); font-size: 26rpx; font-weight: 700;
+}
+.tag-time {
+  margin-left: auto; color: var(--text-sec); font-size: 24rpx;
+}
+
+.members-row {
+  display: flex; flex-wrap: wrap; gap: 14rpx; align-items: flex-start;
+}
+.slot {
+  background: rgba(0, 0, 0, 0.32);
+  border: 1rpx solid var(--border);
+  border-radius: 12rpx;
+  padding: 10rpx 18rpx;
+  min-width: 112rpx;
+  text-align: center;
+  position: relative;
+}
+.slot.empty {
+  border-style: dashed; opacity: 0.38;
+  min-height: 96rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22rpx; color: var(--text-muted);
+}
+.slot.leader::after {
+  content: '队';
+  position: absolute; top: -14rpx; right: -14rpx;
+  background: var(--gold); color: #1a0e05;
+  font-size: 18rpx;
+  width: 30rpx; height: 30rpx;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+}
+.slot .sn { display: block; font-size: 24rpx; color: var(--text); white-space: nowrap; }
+.slot .sm { display: block; font-size: 22rpx; color: var(--gold); margin-top: 4rpx; }
+.slot .ss { display: block; font-size: 20rpx; color: var(--text-muted); }
+
+.card-foot {
+  display: flex; justify-content: flex-end; margin-top: 16rpx;
+}
+.count-tag { font-size: 22rpx; color: var(--text-muted); }
+.count-tag.full-tag { color: #e05050; }
+
+/* ===== 底部按钮 ===== */
+.bottom-bar {
+  position: absolute;
+  bottom: 112rpx;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+.bottom-bar .create-btn {
+  pointer-events: auto;
+}
+.create-btn {
+  padding: 14rpx 44rpx;
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+  height: auto;
+}
+
+/* ===== 弹窗 ===== */
+.modal-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-box {
+  width: 85%;
+  max-width: 640rpx;
+  background: #1e1208;
+  border: 1rpx solid var(--border-hi);
+  border-radius: 24rpx;
+  padding: 48rpx 40rpx;
+}
+.modal-title {
+  display: block;
+  text-align: center;
+  font-size: 36rpx;
+  color: var(--gold-light);
+  font-weight: 700;
+  letter-spacing: 4rpx;
+  margin-bottom: 40rpx;
+}
+
+.form-group { margin-bottom: 28rpx; }
+.form-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-sec);
+  margin-bottom: 12rpx;
+  letter-spacing: 2rpx;
+}
+.form-picker {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1rpx solid var(--border-hi);
+  border-radius: 12rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  padding: 0 24rpx;
+  color: var(--text);
+  font-size: 28rpx;
+}
+.form-hint {
+  display: block;
+  font-size: 22rpx;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 8rpx 0 32rpx;
+}
+
+.modal-btns {
+  display: flex; gap: 24rpx;
+}
+.modal-btns .btn { flex: 1; }
+
+/* ===== 操作面板 ===== */
+.action-sheet {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #1e1208;
+  border-top: 1rpx solid var(--border-hi);
+  border-radius: 24rpx 24rpx 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 1001;
+}
+.action-item {
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 30rpx;
+  color: var(--gold-light);
+  letter-spacing: 2rpx;
+  border-bottom: 1rpx solid var(--border);
+}
+.action-item:last-child { border-bottom: none; }
+.action-item.danger { color: #e05050; }
+.action-item.cancel {
+  color: var(--text-muted);
+  margin-top: 12rpx;
+  border-top: 8rpx solid rgba(0, 0, 0, 0.3);
+}

@@ -1,6 +1,6 @@
 <view class="page">
   <view class="page-hd" style="padding-top: {{statusBarHeight}}px; margin-top: 20rpx;">
-    <text class="page-hd-title">身份牌</text>
+    <text class="page-hd-title">侠客居</text>
     <text class="page-hd-sub">绑定江湖身份 · 接收通知令</text>
   </view>
 
@@ -17,6 +17,23 @@
       </view>
       
       <view class="divider" style="margin: 32rpx 0;"></view>
+
+      <!-- 统计条 -->
+      <view class="stats-strip">
+        <view class="stat-card">
+          <view class="stat-value">
+            <text class="stat-number">{{userStats.signInCount}}</text>
+            <text class="stat-unit">日</text>
+          </view>
+          <text class="stat-label">累计签到</text>
+        </view>
+        <view class="stat-card">
+          <view class="stat-value">
+            <text class="stat-number">{{userStats.contributionPoints}}</text>
+          </view>
+          <text class="stat-label">贡献值</text>
+        </view>
+      </view>
 
       <view class="bound-status">
         <text class="status-dot">●</text>
@@ -74,6 +91,22 @@
   </view>
 
   <view class="safe-bottom"></view>
+
+  <!-- 签到按钮（右下角固定） -->
+  <view wx:if="{{showSignIn}}" class="sign-btn-wrap" bindtap="onSignIn">
+    <text class="sign-btn-icon">📜</text>
+    <text class="sign-btn-text">每日签到</text>
+  </view>
+
+  <!-- 签到成功弹层 -->
+  <view wx:if="{{showSignSuccess}}" class="sign-mask" bindtap="onCloseSignSuccess">
+    <view class="sign-success-box" catchtap="">
+      <text class="sign-success-icon">✨</text>
+      <text class="sign-success-title">签到成功</text>
+      <text class="sign-success-detail">贡献值 +{{signEarnedPoints}}</text>
+      <text class="sign-success-count">累计签到 {{signInCount}} 天</text>
+    </view>
+  </view>
 </view>
 
 <!-- 注册弹窗 -->

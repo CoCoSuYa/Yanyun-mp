@@ -7,8 +7,8 @@
   <view wx:if="{{!loading && !isBound}}" class="tip-box">
     <text class="tip-icon">⚔</text>
     <text class="tip-text">尚未绑定江湖身份</text>
-    <text class="tip-sub">绑定账号后，方可领取令牌\n获取通知资格</text>
-    <view class="btn btn-primary" bindtap="goToBind">前往身份牌</view>
+    <text class="tip-sub">绑定账号后，方可领取令牌</text>
+    <view class="btn btn-primary" bindtap="goToBind">前往侠客居</view>
   </view>
 
   <view wx:if="{{isBound}}" class="content">

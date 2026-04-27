@@ -11,6 +11,11 @@ Page({
     nameFocus: false,
     pwdFocus: false,
     statusBarHeight: 20,
+    userStats: { signInCount: 0, contributionPoints: 0 },
+    showSignIn: false,
+    showSignSuccess: false,
+    signInCount: 0,
+    signEarnedPoints: 0,
 
     // 注册弹窗
     showRegister: false,
@@ -33,12 +38,96 @@ Page({
 
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar().setData) {
-      this.getTabBar().setData({ selected: 1 });
+      this.getTabBar().setData({ selected: 2 });
     }
     const user = wx.getStorageSync('boundUser');
     this.setData({ boundUser: user || null, errMsg: '' });
+    if (user && user.id) {
+      this._loadStats(user);
+      this._checkSignIn(user.id);
+    } else {
+      this.setData({ showSignIn: false });
+    }
     const tb = this.getTabBar && this.getTabBar();
     if (tb && tb.syncBgmState) tb.syncBgmState();
+  },
+
+  async _loadStats(user) {
+    const stats = {
+      signInCount: user.signInCount || 0,
+      contributionPoints: user.contributionPoints || 0,
+    };
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'yanyunApi',
+        data: { action: 'getUser', userId: user.id }
+      });
+      const r = res.result;
+      if (r && r.user) {
+        stats.signInCount = r.user.signInCount || 0;
+        stats.contributionPoints = r.user.contributionPoints || 0;
+        const updated = { ...user, signInCount: stats.signInCount, contributionPoints: stats.contributionPoints };
+        wx.setStorageSync('boundUser', updated);
+      }
+    } catch (_) {}
+    this.setData({ userStats: stats });
+  },
+
+  async _checkSignIn(userId) {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'yanyunApi',
+        data: { action: 'getSignInStatus', userId }
+      });
+      const r = res.result;
+      if (r && !r.error) {
+        this.setData({ showSignIn: !r.alreadySignedIn });
+      }
+    } catch (_) {}
+  },
+
+  async onSignIn() {
+    const user = wx.getStorageSync('boundUser');
+    if (!user) return;
+    this.setData({ showSignIn: false });
+    wx.showLoading({ title: '签到中…' });
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'yanyunApi',
+        data: { action: 'signIn', userId: user.id }
+      });
+      const r = res.result;
+      if (r.error) {
+        if (r.alreadySignedIn) {
+          wx.showToast({ title: '今日已签到', icon: 'none' });
+        } else {
+          wx.showToast({ title: r.error, icon: 'none' });
+          this.setData({ showSignIn: true });
+        }
+        return;
+      }
+      user.signInCount = r.signInCount;
+      user.contributionPoints = r.contributionPoints;
+      wx.setStorageSync('boundUser', user);
+
+      this.setData({
+        showSignSuccess: true,
+        signInCount: r.signInCount,
+        signEarnedPoints: r.earnedPoints || 0,
+        userStats: { signInCount: r.signInCount, contributionPoints: r.contributionPoints },
+      });
+      setTimeout(() => this.setData({ showSignSuccess: false }), 3000);
+    } catch (e) {
+      console.error('[签到失败]', e);
+      wx.showToast({ title: '网络异常', icon: 'none' });
+      this.setData({ showSignIn: true });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  onCloseSignSuccess() {
+    this.setData({ showSignSuccess: false });
   },
 
   // ===== 登录 =====
@@ -85,6 +174,8 @@ Page({
       wx.setStorageSync('boundUser', user);
       this.setData({ boundUser: user, gameName: '', password: '', displayPwd: '' });
       wx.showToast({ title: '登录成功', icon: 'success' });
+      this._loadStats(user);
+      this._checkSignIn(user.id);
     } catch (e) {
       console.error('登录失败:', e);
       this.setData({ errMsg: '网络异常，请重试' });
@@ -155,8 +246,9 @@ Page({
         wx.setStorageSync('boundUser', user);
         this.setData({ boundUser: user, showRegister: false });
         wx.showToast({ title: '注册成功，已自动登录', icon: 'success' });
+        this._loadStats(user);
+        this._checkSignIn(user.id);
       } else {
-        // 注册接口未直接返回 user，尝试登录
         const loginRes = await wx.cloud.callFunction({
           name: 'yanyunApi',
           data: { action: 'login', gameName: regGameName.trim(), password: regPassword }
@@ -170,6 +262,8 @@ Page({
         wx.setStorageSync('boundUser', lr);
         this.setData({ boundUser: lr, showRegister: false });
         wx.showToast({ title: '注册成功，已自动登录', icon: 'success' });
+        this._loadStats(lr);
+        this._checkSignIn(lr.id);
       }
     } catch (e) {
       console.error('注册失败:', e);

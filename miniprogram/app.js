@@ -19,7 +19,9 @@ App({
     bgm.init();
     bgm.loadPlaylist();
 
-    // 尽早预加载第二个 tab，消除首次切换的加载延迟
-    wx.preloadPage({ url: '/pages/shenfan/shenfan' });
+    if (typeof wx.preloadPage === 'function') {
+      wx.preloadPage({ url: '/pages/zudui/zudui' });
+      wx.preloadPage({ url: '/pages/shenfan/shenfan' });
+    }
   }
 });
